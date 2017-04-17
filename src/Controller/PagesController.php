@@ -27,7 +27,6 @@ use Cake\View\Exception\MissingTemplateException;
  */
 class PagesController extends AppController
 {
-
     /**
      * Displays a view
      *
@@ -41,7 +40,7 @@ class PagesController extends AppController
     $this->viewBuilder()->layout('frontend');
 }
     public function display()
-    {
+    { 
         $path = func_get_args();
 
         $count = count($path);
@@ -57,7 +56,6 @@ class PagesController extends AppController
             $subpage = $path[1];
         }
         $this->set(compact('page', 'subpage'));
-
         try {
             $this->render(implode('/', $path));
         } catch (MissingTemplateException $e) {
@@ -67,8 +65,5 @@ class PagesController extends AppController
             throw new NotFoundException();
         }
     }
-    public function index(){
-
-      
-    }
+    
 }

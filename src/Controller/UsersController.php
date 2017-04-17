@@ -13,7 +13,6 @@ class UsersController extends AppController
         $this->Auth->allow('add');
         // Simple setup
         $this->Auth->config('authenticate', ['Form']);
-
     }
 
     public function index()
@@ -55,21 +54,20 @@ class UsersController extends AppController
     public function login()
     {
         if ($this->request->is('post')) {
-
+            
             $user = $this->Auth->identify();
-            //$this->p($user);
+            
             if ($user) {
-              
                 $id = $user['id'];
                 $userss = TableRegistry::get('Users');
                 $query = $userss->find()
                 ->select(['username','password','role'])
                 ->where(['id =' => $id]);
                 $data = $query->toArray();
-              
+              // $this->p($data);
                 $this->Auth->setUser($user);
                 $this->Cookie->write('login',
-            ['username' => $user['username']]
+            ['username' => $user['username'],'password' => $data[0]['password']]
 );
                 return $this->redirect($this->Auth->redirectUrl());
             }

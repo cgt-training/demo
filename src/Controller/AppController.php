@@ -17,6 +17,7 @@ namespace App\Controller;
 use Cake\Controller\Controller;
 use Cake\Event\Event;
 use Cake\ORM\TableRegistry;
+use Cake\I18n\I18n;
 
 /**
  * Application Controller
@@ -42,7 +43,7 @@ class AppController extends Controller
     {
         parent::initialize();
         //$this->loadComponent('Flash');
-
+        
        $this->loadComponent('Auth', [
         'loginAction' => [
             'controller' => 'Users',
@@ -62,7 +63,7 @@ class AppController extends Controller
         'authError' => 'Did you really think you are allowed to see that?',
         'authenticate' => [
             'Form' => [
-                'fields' => ['username' => 'rahul','password' => '123456']
+                'fields' => ['username' => '','password' => '']
             ]
         ],
         'storage' => 'Session'
@@ -85,6 +86,31 @@ class AppController extends Controller
      */
     public function beforeRender(Event $event)
     {
+        $themes = TableRegistry::get('Settings');
+         //$query = $themes->find()->toarray();
+         $query = $themes->find()->toarray();
+         //$this->p($query[0]);
+         if(!empty($query)){
+            $name     = $query[0]['name'];
+            $language = $query[0]['language'];
+            
+            if(!empty($language)){
+                I18n::locale($language);    
+            }else{
+                I18n::locale('en_US');
+            }
+             
+            if($name == '2'){
+                $this->viewBuilder()->theme('Modern');
+            }else if($name == '3'){
+                $this->viewBuilder()->theme('Event');
+            }else{
+
+            }
+         }else{
+
+         }
+        
         if (!array_key_exists('_serialize', $this->viewVars) &&
             in_array($this->response->type(), ['application/json', 'application/xml'])
         ) {
@@ -94,7 +120,7 @@ class AppController extends Controller
     public function beforeFilter(Event $event)
     {
        // $this->Cookie->delete('login');
-        $this-> Auth-> allow('index');
+        $this-> Auth-> allow('index','login');
         
         
     }
@@ -120,16 +146,18 @@ public function isAuthorized($user)
     return false;
 }
 public function checklogin(){
-   $cookies  = $this->Cookie->read('login');
-        //echo $cookies;exit;
+     
     if (!$this->Auth->user() && $this->Cookie->read('login')) {
         $cookies  = $this->Cookie->read('login');
-        echo $cookies;exit;
+       // $this->p($cookies);
         if(!empty($cookies)){
             $users = TableRegistry::get('Users');
-            $data = $users->findByUsername('rahul');
+            $username = $cookies['username'];
+            $data = $users->findByUsername($username)->toarray();
+            //$this->p($data);
         if ($data) {
-            $this->Auth->setUser($data);
+            $this->Auth->setUser($data[0]);
+
             return $this->redirect($this->Auth->redirectUrl());
         } else {
            // $this->Cookie->delete('login');

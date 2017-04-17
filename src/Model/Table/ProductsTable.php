@@ -50,19 +50,22 @@ class ProductsTable extends Table
         $validator
             ->integer('id')
             ->allowEmpty('id', 'create');
-
         $validator
             ->requirePresence('name', 'create')
             ->notEmpty('name');
-
         $validator
             ->requirePresence('description', 'create')
             ->notEmpty('description');
-
-        
         return $validator;
     }
-    public function GetResult(){
-        echo "xcxc";exit;
+    public function findNameBy(Query $query, array $options)
+    {
+       
+        return $query->where(['name' => $options['name']]);
+    }
+    public function findDescriptionBy(Query $query, array $options)
+    {
+       
+        return $query->where(['description' => $options['description']]);
     }
 }

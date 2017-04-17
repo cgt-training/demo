@@ -20,6 +20,7 @@
 
 use Cake\Core\Plugin;
 use Cake\Routing\Router;
+use Cake\Routing\Route\DashedRoute;
 
 /**
  * The default class to use for all routes
@@ -41,21 +42,32 @@ use Cake\Routing\Router;
  */
 Router::defaultRouteClass('DashedRoute');
 
+Router::prefix('admin', function ($routes) {
+    // All routes here will be prefixed with `/admin`
+    // And have the prefix => admin route element added.
+     $routes->connect('/', ['controller' => 'Users', 'action' => 'login']);
+     $routes->connect('/dashboards/:action', ['controller' => 'Dashboards', 'action' => 'index']);
+     $routes->connect('/productstatus/', ['controller' => 'Products', 'action' => 'productstatus']);
+    
+   
+    $routes->fallbacks(DashedRoute::class);
+});
 Router::scope('/', function ($routes) {
     /**
      * Here, we are connecting '/' (base path) to a controller called 'Pages',
      * its action called 'display', and we pass a param to select the view file
      * to use (in this case, src/Template/Pages/home.ctp)...
      */
-    $routes->connect('/', ['controller' => 'Pages', 'action' => 'index']);
-
+   
     /**
      * ...and connect the rest of 'Pages' controller's URLs.
      */
+     $routes->extensions(['json', 'xml', 'ajax']);
     $routes->connect('/pages/*', ['controller' => 'Pages', 'action' => 'display']);
-    $routes->connect('/', ['controller' => 'Blogs', 'action' => 'index']);
-    $routes->connect('/', ['controller' => 'Users', 'action' => 'index']);
    
+    $routes->connect('/', ['controller' => 'Users', 'action' => 'index']);
+    $routes->connect('/activeemployes/', ['controller' => 'Employes', 'action' => 'activeemployes']);
+
    /**
      * Connect catchall routes for all controllers.
      *

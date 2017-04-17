@@ -7,14 +7,15 @@
     <ul class="title-area col-lg-3 col-md-4 columns">
         <li class="name">
         <h1>
-        <a href="">Products</a>
+        <a href=""><?= __('Products');?></a>
         </h1>
         </li>
     </ul>
     <section class="top-bar-section">
     <ul class="right">
         <li>
-        <a target="_blank" href="http://book.cakephp.org/3.0/">Documentation / API</a>
+        <a target="_blank" href="http://book.cakephp.org/3.0/">
+        <?= __('Documentation / API');?></a>
         </li>
        
     </ul>
@@ -23,10 +24,10 @@
 <nav class="col-lg-3 col-md-4 columns" id="actions-sidebar">
     <ul class="side-nav">
         <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('Edit Product'), ['action' => 'edit', $product->id]) ?> </li>
-        <li><?= $this->Form->postLink(__('Delete Product'), ['action' => 'delete', $product->id], ['confirm' => __('Are you sure you want to delete # {0}?', $product->id)]) ?> </li>
+        <!--<li><?= $this->Html->link(__('Edit Product'), ['action' => 'edit', $product->id]) ?> </li>
+        <li><?= $this->Form->postLink(__('Delete Product'), ['action' => 'delete', $product->id], ['confirm' => __('Are you sure you want to delete # {0}?', $product->id)]) ?> </li>-->
         <li><?= $this->Html->link(__('List Products'), ['action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New Product'), ['action' => 'add']) ?> </li>
+        <!--<li><?= $this->Html->link(__('New Product'), ['action' => 'add']) ?> </li>-->
     </ul>
 </nav>
 <div class="articles view col-lg-9 col-md-8 columns content">
@@ -46,7 +47,7 @@
             <td><?= h($product->created) ?></td>
         </tr>
         <tr>
-            <th scope="row"><?= __('Modified') ?></th>
+            <th scope="row"><?= __('modified') ?></th>
             <td><?= h($product->modified) ?></td>
         </tr>
         <tr>

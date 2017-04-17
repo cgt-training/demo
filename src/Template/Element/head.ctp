@@ -12,6 +12,7 @@
         <?= $this->Html->css('style.css') ?>
         <?= $this->Html->css('font-awesome.css') ?>
         <?= $this->Html->css('media.css') ?>
+         <?= $this->Html->css('form.css') ?>
         
         <?= $this->Html->script('http://code.jquery.com/jquery-1.11.1.min.js');?>
         <?= $this->Html->script('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js');?>

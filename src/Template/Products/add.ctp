@@ -7,14 +7,15 @@
     <ul class="title-area col-lg-3 col-md-4 columns">
         <li class="name">
         <h1>
-        <a href="">Products</a>
+        <a href=""><?php echo __('product');?></a>
         </h1>
         </li>
     </ul>
     <section class="top-bar-section">
     <ul class="right">
         <li>
-        <a target="_blank" href="http://book.cakephp.org/3.0/">Documentation / API</a>
+        <a target="_blank" href="http://book.cakephp.org/3.0/">
+            <?= __('Documentation / API');?></a>
         </li>
         
     </ul>

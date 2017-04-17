@@ -1,0 +1,9 @@
+.toggle_on {
+  color: green;
+  font-size: 25px;
+  cursor: pointer;
+}
+.toggle_off {
+    cursor: pointer;
+  font-size: 25px;
+}

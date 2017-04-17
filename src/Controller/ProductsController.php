@@ -4,6 +4,7 @@ namespace App\Controller;
 use App\Controller\AppController;
 use Cake\Event\Event;
 use Cake\ORM\TableRegistry;
+use Cake\Utility\Security;
 /**
  * Products Controller
  *
@@ -33,9 +34,19 @@ class ProductsController extends AppController
     }
     public function index()
     {  
-        
-    
-        $products = $this->paginate($this->Products);
+        $productsdata = $this->Products->find('All')->where (['status' => 'Activated'])->toarray();
+        //$this->p($productsdata);exit;
+        if(!empty($productsdata)){
+            foreach ($productsdata as $key => $product) {
+                $id = $product['id'];
+// 1.Call function checkProductId check product owner self or not
+// if self then set productpermission value used in view page 
+                $status = $this->checkProductId($id);
+                $productsdata[$key]['productpermission'] = $status; 
+            }
+        }
+        //$this->p($productsdata);
+        $products = $productsdata;
         $this->set(compact('products'));
         $this->set('_serialize', ['products']);
         
@@ -53,7 +64,6 @@ class ProductsController extends AppController
         $product = $this->Products->get($id, [
             'contain' => []
         ]);
-
         $this->set('product', $product);
         $this->set('_serialize', ['product']);
     }
@@ -64,7 +74,8 @@ class ProductsController extends AppController
      * @return \Cake\Network\Response|null Redirects on successful add, renders view otherwise.
      */
     public function add()
-    {
+    { 
+
         $product = $this->Products->newEntity();
         if ($this->request->is('post')) {
 
@@ -79,9 +90,11 @@ class ProductsController extends AppController
                 $uploadFile = $uploadPath.$newfilename;
                 if(move_uploaded_file($this->request->data['product_image']['tmp_name'],$uploadFile)){
                     $product = $this->Products->patchEntity($product, $this->request->getData());
+
                     $product->product_image = $newfilename;
                     $product->created  = date("Y-m-d H:i:s");
                     $product->modified = date("Y-m-d H:i:s");
+
                   // $this->p($product);
             if ($this->Products->save($product)) {
                 $this->Flash->success(__('The product has been saved.'));
@@ -119,6 +132,13 @@ class ProductsController extends AppController
      */
     public function edit($id = null)
     {
+        
+         if(!empty($id)){
+          $status =  $this->checkProductId($id);
+          if($status == '0'){
+            return $this->redirect(['action' => 'index']);
+          }
+        }
         $product = $this->Products->get($id, [
             'contain' => []
         ]);
@@ -162,6 +182,12 @@ class ProductsController extends AppController
      */
     public function delete($id = null)
     {
+         if(!empty($id)){
+          $status =  $this->checkProductId($id);
+          if($status == '0'){
+            return $this->redirect(['action' => 'index']);
+          }
+        }
         $directory = WWW_ROOT . 'img/uploads/product/';
         $this->request->allowMethod(['post', 'delete']);
         $product = $this->Products->get($id);
@@ -178,5 +204,18 @@ class ProductsController extends AppController
             $this->Flash->error(__('The product could not be deleted. Please, try again.'));
         }
         return $this->redirect(['action' => 'index']);
+    }
+
+ // Check product id or user id if match recode then send count otherwise send 0 then check in 
+    
+public function checkProductId($id = null){
+        $return = array();
+        $user = $this->Auth->user();
+        if(!empty($id)){
+            $return = $this->Products->find('All')->where(['id'=>$id,'users_id' => $user['id']])->count();
+        }else{
+            return $return;
+        }
+        return $return;
     }
 }

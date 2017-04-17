@@ -2,6 +2,8 @@
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
+use Cake\Utility\Security;
+
 
 /**
  * Product Entity
@@ -29,4 +31,15 @@ class Product extends Entity
         '*' => true,
         'id' => false
     ];
+     protected function _setName($name)
+    { 
+        $key = 'wt1U5MACWJFTXGenFoZoiLwQGrLgdbHA';
+        $result = Security::encrypt($name, $key);
+        //$de = Security::decrypt($result, $key);
+        // print_r((new DefaultPasswordHasher)->hash($password));die();
+       //echo $result;exit;
+        return $name;
+    }
+    
+    
 }

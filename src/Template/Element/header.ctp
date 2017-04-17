@@ -27,25 +27,26 @@ use Cake\View\Helper\UrlHelper;
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-      <li><a href="#" class="active">food</a></li>
+      
        <li><a href="<?php echo $this->Url->build(["controller" => "Blogs","action" => "view"]);
-?>">Blog</a></li>
+?>"><?= __('Blog'); ?></a></li>
       <li><a href="<?php echo $this->Url->build(["controller" => "Articles","action" => ""]);
-?>">Article</a></li>
-      <li><a href="<?php echo $this->Url->build(["controller" => "Products","action" => ""]);
-?>">Product</a></li>
+?>"><?= __('Article'); ?></a></li>
+      <li><a href="<?php echo $this->Url->build(["controller" => "Products","action" => "index"]);
+?>"> <?= __('Product'); ?></a></li>
 <?php 
 if (!$authUser)
 { ?>
   <li><a href="<?php echo $this->Url->build(["controller" => "Users","action" => "login"]);
-?>">log in</a></li>  
+?>"> <?= __('log in'); ?></a></li>  
 <?php }else{
 ?>
 <li><a href="<?php echo $this->Url->build(["controller" => "Users","action" => "logout"]);
-?>">logout</a></li>
+?>"> <?= __('logout'); ?></a></li>
 <?php } ?>
       
-
+<li><a href="<?php echo $this->Url->build(["controller" => "Settings","action" => "index"]);
+?>"> <?= __('Theme Change'); ?></a></li>
       </ul>
      
     </div><!-- /.navbar-collapse -->

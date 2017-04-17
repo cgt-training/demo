@@ -11,6 +11,7 @@
     <fieldset>
         <legend><?= __('Add User') ?></legend>
         <?= $this->Form->control('username') ?>
+        <?= $this->Form->control('email') ?>
         <?= $this->Form->control('password') ?>
         <?= $this->Form->control('role', [
             'options' => ['admin' => 'Admin', 'author' => 'Author']
@@ -26,7 +27,10 @@
             'username': {
                 required: true,
             },
-            
+            'email': {
+                required: true,
+                email:true,
+            },
             'password': {
                 required: true,
             },
@@ -34,6 +38,10 @@
         messages: {
             'username': {
                 required: "Please enter username",
+            },
+           'email': {
+                required: "Please enter email",
+                email: "Please enter valid email",
             },
           
             'password': {
